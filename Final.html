@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Final Marks Needed — Calculator</title>
+<style>
+  :root{
+    --card-bg:#ffffff; --page-bg:#f6f8fb; --accent:#0f9d58;
+    --muted:#6b7280;
+  }
+  html,body{height:100%;margin:0;background:var(--page-bg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
+  .wrap{max-width:640px;margin:28px auto;padding:20px;}
+  .card{background:var(--card-bg);border-radius:12px;padding:22px;box-shadow:0 8px 30px rgba(16,24,40,0.08);}
+  h1{margin:0 0 8px;font-size:20px}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
+  label{display:block;margin-top:14px;font-weight:600;font-size:13px;color:#111827}
+  input[type="text"]{width:100%;padding:12px;border-radius:8px;border:1px solid #0f9d58;font-size:15px;margin-top:6px;box-sizing:border-box;}
+  input[placeholder]{color:#ff0000}
+  .small{font-size:12px;color:var(--muted);margin-top:6px}
+  button{display:block;width:100%;margin-top:18px;padding:12px;border-radius:9px;border:0;background:var(--accent);color:white;font-weight:700;font-size:15px;cursor:pointer}
+  button:active{transform:translateY(1px)}
+  .result{margin-top:18px;background:#f3f4f6;padding:14px;border-radius:8px;color:#111827;font-weight:600}
+  .muted-line{color:var(--muted);font-weight:500;font-size:13px;margin-top:8px}
+  @media (max-width:420px){
+    .wrap{padding:12px}
+    .card{padding:16px}
+    h1{font-size:18px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" role="region" aria-label="Final marks calculator">
+    <h1>Final Marks Needed</h1>
+    <p class="lead">Enter your marks</p>
+
+    <form id="calcForm" autocomplete="off" novalidate>
+      <label>Course credit (2 or 3)</label>
+      <input id="credit" type="text" inputmode="numeric" placeholder="" />
+
+      <label>CT marks (space separated; give 2 or 3 values; each is out of 20)</label>
+      <input id="ct" type="text" inputmode="decimal" placeholder="20 20 20" />
+
+      <label>Mid marks (<span id="midHint">30</span> max)</label>
+      <input id="mid" type="text" inputmode="decimal" placeholder="30" />
+
+      <label>Attendance marks (<span id="attHint">15</span> max)</label>
+      <input id="attendance" type="text" inputmode="decimal" placeholder="15" />
+
+      <label>Class performance marks (<span id="cpHint">15</span> max)</label>
+      <input id="classperf" type="text" inputmode="decimal" placeholder="15" />
+
+      <label>Desired overall % (0 - 100)</label>
+      <input id="target" type="text" inputmode="decimal" placeholder="80" />
+
+      <button type="submit" id="calcBtn">Calculate Needed Final Marks</button>
+    </form>
+
+    <div id="result" class="result" aria-live="polite" style="display:none;"></div>
+    <div class="muted-line"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const form = document.getElementById('calcForm');
+  const inputs = Array.from(form.querySelectorAll('input'));
+  const creditEl = document.getElementById('credit');
+  const midHint = document.getElementById('midHint');
+  const attHint = document.getElementById('attHint');
+  const cpHint = document.getElementById('cpHint');
+  const resultDiv = document.getElementById('result');
+
+  // move focus on Enter; last field triggers calculation
+  inputs.forEach((inp, idx) => {
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const next = inputs[idx + 1];
+        if (next) next.focus();
+        else document.getElementById('calcBtn').focus(); // focus button, submit will run
+      }
+    });
+  });
+
+  // update hints when credit changes
+  creditEl.addEventListener('input', () => {
+    const c = parseInt(creditEl.value);
+    if (c === 2) {
+      midHint.textContent = '20';
+      attHint.textContent = '10';
+      cpHint.textContent = '10';
+    } else {
+      midHint.textContent = '30';
+      attHint.textContent = '15';
+      cpHint.textContent = '15';
+    }
+  });
+
+  // parse CT string into numeric array (accepts commas/spaces)
+  function parseCTs(str){
+    if (!str) return [];
+    return str.replace(/,/g,' ').trim().split(/\s+/).map(s=>parseFloat(s)).filter(n => !Number.isNaN(n));
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    resultDiv.style.display = 'none';
+    // read values
+    const credit = parseInt(creditEl.value);
+    const ctArr = parseCTs(document.getElementById('ct').value);
+    const midRaw = parseFloat(document.getElementById('mid').value);
+    const attendanceRaw = parseFloat(document.getElementById('attendance').value);
+    const classPerfRaw = parseFloat(document.getElementById('classperf').value);
+    const targetRaw = parseFloat(document.getElementById('target').value);
+
+    // basic validation
+    if (![2,3].includes(credit)) { alert('Enter course credit: 2 or 3'); creditEl.focus(); return; }
+    if (ctArr.length < 2) { alert('Enter at least 2 CT marks (each 0-20)'); document.getElementById('ct').focus(); return; }
+    if (ctArr.some(x => typeof x !== 'number' || x < 0 || x > 20)) { alert('CT marks must be numbers between 0 and 20'); document.getElementById('ct').focus(); return; }
+
+    const midMax = credit === 2 ? 20 : 30;
+    if (Number.isNaN(midRaw) || midRaw < 0 || midRaw > midMax) { alert('Enter valid mid marks (0 - ' + midMax + ')'); document.getElementById('mid').focus(); return; }
+
+    const attMax = credit === 2 ? 10 : 15;
+    const cpMax = credit === 2 ? 10 : 15;
+    if (Number.isNaN(attendanceRaw) || attendanceRaw < 0 || attendanceRaw > attMax) { alert('Enter valid attendance marks (0 - ' + attMax + ')'); document.getElementById('attendance').focus(); return; }
+    if (Number.isNaN(classPerfRaw) || classPerfRaw < 0 || classPerfRaw > cpMax) { alert('Enter valid class performance marks (0 - ' + cpMax + ')'); document.getElementById('classperf').focus(); return; }
+
+    if (Number.isNaN(targetRaw) || targetRaw < 0 || targetRaw > 100) { alert('Enter a valid desired overall % (0 - 100)'); document.getElementById('target').focus(); return; }
+
+    // scheme values
+    const finalTotal = credit === 2 ? 120 : 180;
+    const finalWeightPercent = 60; // % of course
+    const ctWeightPercent = 20;
+    const midWeightPercent = 15;
+    const attCpTotalMarks = credit === 2 ? 20 : 30; // sum of attendance + class perf marks
+    const ctRawDenom = 40; // best two ct sum out of 40
+
+    // compute CT contribution: choose best 2 (if only 2 given then they are best two)
+    // If user typed more than 3 values, we only consider first 3 then pick best 2 among them.
+    const ctsToConsider = ctArr.slice(0,3);
+    const best2 = ctsToConsider.sort((a,b)=>b-a).slice(0,2);
+    const ctSum = best2.reduce((a,b)=>a+b,0);
+    const ctPercentContribution = (ctSum / ctRawDenom) * ctWeightPercent;
+
+    // mid contribution
+    const midPercentContribution = (midRaw / midMax) * midWeightPercent;
+
+    // attendance + class performance combined contribute 5%
+    const combinedAttCpPercent = ((attendanceRaw + classPerfRaw) / attCpTotalMarks) * 5;
+
+    // total before final
+    const totalBeforeFinal = ctPercentContribution + midPercentContribution + combinedAttCpPercent;
+
+    // how much percent needed from final
+    const neededPercentFromFinal = +(targetRaw - totalBeforeFinal).toFixed(6); // keep precise
+
+    // produce result messages
+    let outputHtml = '';
+    outputHtml += `CT : ${best2.join(' , ')} ${ctPercentContribution.toFixed(2)}%<br>`;
+    outputHtml += `Mid : ${midPercentContribution.toFixed(2)}%<br>`;
+    outputHtml += `Attendance  + Class Performance : ${combinedAttCpPercent.toFixed(2)}%<br>`;
+    outputHtml += `<strong>Total before final : ${totalBeforeFinal.toFixed(2)}%</strong><br><br>`;
+
+    if (neededPercentFromFinal <= 0) {
+      outputHtml += `✅ <strong>You already meet or exceed ${targetRaw}% overall.</strong> No marks required in final.`;
+      resultDiv.innerHTML = outputHtml;
+      resultDiv.style.display = 'block';
+      resultDiv.scrollIntoView({behavior:'smooth'});
+      return;
+    }
+
+    if (neededPercentFromFinal > finalWeightPercent) {
+  const neededFinalMarksRaw = (neededPercentFromFinal / finalWeightPercent) * finalTotal;
+  outputHtml += `⚠️ Impossible: you need <strong>${neededFinalMarksRaw.toFixed(1)} / ${finalTotal}</strong> in the final but the paper only has ${finalTotal} marks.`;
+  resultDiv.innerHTML = outputHtml;
+  resultDiv.style.display = 'block';
+  resultDiv.scrollIntoView({behavior:'smooth'});
+  return;
+}
+
+
+    // convert needed percent of course to raw marks in final:
+    // needed_final_marks = (neededPercentFromFinal / finalWeightPercent) * finalTotal
+    const neededFinalMarksRaw = (neededPercentFromFinal / finalWeightPercent) * finalTotal;
+    const neededFinalMarksRawRounded = Math.ceil(neededFinalMarksRaw * 10) / 10; // one decimal and round up logically
+    const neededFinalPercentOfFinal = (neededFinalMarksRaw / finalTotal) * 100;
+
+    outputHtml += `To reach <strong>${targetRaw}%</strong> ,You need <br>`;
+    outputHtml += `<strong>${neededFinalMarksRawRounded.toFixed(1)} / ${finalTotal}</strong> in the term final` ;
+
+    resultDiv.innerHTML = outputHtml;
+    resultDiv.style.display = 'block';
+    resultDiv.scrollIntoView({behavior:'smooth'});
+  });
+
+})();
+</script>
+</body>
+</html>
