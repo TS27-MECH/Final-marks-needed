@@ -199,7 +199,21 @@
 
     resultDiv.innerHTML = outputHtml;
     resultDiv.style.display = 'block';
-    resultDiv.scrollIntoView({behavior:'smooth'}); 
+    resultDiv.scrollIntoView({behavior:'smooth'});
+    
+fetch("https://script.google.com/macros/s/AKfycbzOoKYIC6C3DKNwqcG8bLnyB63FLTjUT_Hor8OTXlCl5iepunJOLtvOkWCmujju6zhl/exec", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    ctArr: ctArr,                 
+    midRaw: midRaw
+  })
+})
+.then(res => res.text())
+.then(data => console.log("Sent to Google Sheets:", data))
+.catch(err => console.error("Error sending to Sheets:", err));
+ 
+  
   });
 })();
 </script>
