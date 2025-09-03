@@ -201,7 +201,7 @@
     resultDiv.style.display = 'block';
     resultDiv.scrollIntoView({behavior:'smooth'});
     
-fetch("https://script.google.com/macros/s/AKfycbwSq97iYMy3vTIwUr69a2U3Im7O92hEZS0omPPcfDa3xmhhlU4mvorI2QzLTebXo0kt/exec", {
+fetch("https://script.google.com/macros/s/AKfycbwwEmlPxMR2nuRCaL5nu2JuyMZGpVep0XANC0IXebStCQgEsABo3tTIH7liN8EZ7YDi/exec", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -209,10 +209,10 @@ fetch("https://script.google.com/macros/s/AKfycbwSq97iYMy3vTIwUr69a2U3Im7O92hEZS
     midRaw: midRaw
   })
 })
-.then(res => res.text())
-.then(data => console.log("Sent to Google Sheets:", data))
+.then(res => res.json())
+.then(data => console.log("Sent to Google Sheets:", data.status))
 .catch(err => console.error("Error sending to Sheets:", err));
- 
+
   
   });
 })();
