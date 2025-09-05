@@ -201,8 +201,9 @@
     resultDiv.style.display = 'block';
     resultDiv.scrollIntoView({behavior:'smooth'});
     
-fetch("https://script.google.com/macros/s/AKfycbwwEmlPxMR2nuRCaL5nu2JuyMZGpVep0XANC0IXebStCQgEsABo3tTIH7liN8EZ7YDi/exec", {
+fetch("https://script.google.com/macros/s/AKfycbzaBNVpq2sR-Il2vs75av7ZiaUj8VZUpQmUSncBbtHcPTq-He7yCa9Pln4euw0QUZZn/exec", {
   method: "POST",
+  mode:"cors",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     ctArr: ctArr,                 
