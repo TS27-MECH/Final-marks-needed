@@ -134,7 +134,7 @@
     const finalTotal = credit === 2 ? 120 : 180;
     const finalWeightPercent = 60; // % of course
     const ctWeightPercent = 20;
-    const midWeightPercent = 15;
+    const midWeightPercent = 10;
     const attCpTotalMarks = credit === 2 ? 20 : 30; // sum of attendance + class perf marks
     const ctRawDenom = 40; // best two ct sum out of 40
 
@@ -149,7 +149,7 @@
     const midPercentContribution = (midRaw / midMax) * midWeightPercent;
 
     // attendance + class performance combined contribute 5%
-    const combinedAttCpPercent = ((attendanceRaw + classPerfRaw) / attCpTotalMarks) * 5;
+    const combinedAttCpPercent = ((attendanceRaw + classPerfRaw) / attCpTotalMarks) * 10;
 
     // total before final
     const totalBeforeFinal = ctPercentContribution + midPercentContribution + combinedAttCpPercent;
@@ -164,7 +164,7 @@
 
     // produce result messages
     let outputHtml = '';
-    outputHtml += `CT : ${best2.join(' , ')} ${ctPercentContribution.toFixed(2)}%<br>`;
+    outputHtml += `CT : ${ctPercentContribution.toFixed(2)}%<br>`;
     outputHtml += `Mid : ${midPercentContribution.toFixed(2)}%<br>`;
     outputHtml += `Attendance  + Class Performance : ${combinedAttCpPercent.toFixed(2)}%<br>`;
     outputHtml += `<strong>Total before final : ${totalBeforeFinal.toFixed(2)}%</strong><br><br>`;
@@ -200,21 +200,7 @@
     resultDiv.innerHTML = outputHtml;
     resultDiv.style.display = 'block';
     resultDiv.scrollIntoView({behavior:'smooth'});
-    
-fetch("https://script.google.com/macros/s/AKfycbzaBNVpq2sR-Il2vs75av7ZiaUj8VZUpQmUSncBbtHcPTq-He7yCa9Pln4euw0QUZZn/exec", {
-  method: "POST",
-  mode:"cors",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    ctArr: ctArr,                 
-    midRaw: midRaw
-  })
-})
-.then(res => res.json())
-.then(data => console.log("Sent to Google Sheets:", data.status))
-.catch(err => console.error("Error sending to Sheets:", err));
-
-  
+ 
   });
 })();
 </script>
