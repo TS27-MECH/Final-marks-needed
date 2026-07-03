@@ -72,10 +72,10 @@
         right: 8%; 
         width: clamp(90px, 16vw, 125px); 
         height: clamp(90px, 16vw, 125px);
-        background: #ffe46b; 
         border-radius: 50%;
         z-index: 2;
         animation: pulseSun 4s infinite alternate ease-in-out;
+        object-fit: cover;
       }
 
       /* EXACT TERRAIN LAYOUT & SCALING */
@@ -144,7 +144,9 @@
     ">
       
       <div class="loader-sky"></div>
-      <div class="loader-sun"></div>
+      
+      <!-- Replaced the Sun div with your Exam Emoji image -->
+      <img class="loader-sun" src="./exam.png" alt="Exam Emoji" />
       
       <!-- Terrain Replication -->
       <div class="terrain-container">
