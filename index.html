@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./exam.png" />
+    <!-- For Android Chrome -->
     <link rel="manifest" href="./manifest.json" />
 
+    <!-- For iPhone/iPad -->
     <link rel="apple-touch-icon" href="./exam.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marks & CGPA Calculator</title>
@@ -14,11 +16,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
+    <!-- Umami Analytics script -->
     <script defer src="https://cloud.umami.is/script.js" data-website-id="dd7d508e-8c4d-4277-9219-931e5d93b5f4"></script>
-    <script type="module" crossorigin src="./assets/index-DgL7R6mx.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-ob4JiF6B.css">
-  </head>
-  <body style="margin: 0; padding: 0; background-color: #0b0f19;">
 
     <!-- LOADING SCREEN STYLES -->
     <style>
@@ -93,7 +92,8 @@
         background: transparent !important;
         z-index: 2;
         animation: pulseSun 4s infinite alternate ease-in-out;
-        object-fit: cover;
+        -o-object-fit: cover;
+           object-fit: cover;
       }
 
       /* EXACT TERRAIN LAYOUT & SCALING */
@@ -143,6 +143,10 @@
         }
       }
     </style>
+    <script type="module" crossorigin src="./assets/index-6tyHRcoa.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C2WFrWfV.css">
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #0b0f19;">
 
     <!-- LOADING SCREEN UI -->
     <div id="custom-loader-screen" style="
@@ -227,11 +231,11 @@
         <span style="
           font-family: 'Dancing Script', cursive;
           font-size: 1.5rem;
-          color: rgb(255, 255, 255); /* Semi-transparent white */
+          color: rgb(255, 255, 255); 
           margin-top: 14px;
           letter-spacing: 0.05em;
           z-index: 2;
-          border-top: 1px solid rgba(31, 13, 13, 0.15); /* Soft white border line */
+          border-top: 1px solid rgba(31, 13, 13, 0.15); 
           padding-top: 6px;
           width: 80px;
           text-align: center;
@@ -257,7 +261,7 @@
       </div>
 
     </div>
-    
+
     <div id="root"></div>
 
     <!-- LOADING SCREEN LOGIC & SETTINGS -->
