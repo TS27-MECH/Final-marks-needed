@@ -8,6 +8,12 @@
     <link rel="apple-touch-icon" href="./exam.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marks & CGPA Calculator</title>
+    
+    <!-- Google Fonts import for your curved signature -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
     <script type="module" crossorigin src="./assets/index-DgL7R6mx.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-ob4JiF6B.css">
   </head>
@@ -21,23 +27,23 @@
         50% { transform: scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.4); }
       }
 
-      /* Sun Pulsing Animation */
+      /* Sun/Emoji Pulsing Animation */
       @keyframes pulseSun {
         0% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 60px 20px rgba(255, 228, 107, 0.4); }
         100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 80px 30px rgba(255, 228, 107, 0.6); }
       }
 
-      /* Dark Glass Orb */
+      /* Rich Dark Slate-Teal Glass Orb (High Contrast & Professional) */
       .glass-orb {
         position: relative;
         width: 340px;
         max-width: 85vw;
         aspect-ratio: 1 / 1; 
         border-radius: 50%;
-        background: rgba(30, 41, 59, 0.65);
+        background: rgba(13, 30, 43, 0.65); /* High-contrast slate-teal glass */
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Clean glowing edge */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -145,7 +151,7 @@
       
       <div class="loader-sky"></div>
       
-      <!-- Replaced the Sun div with your Exam Emoji image -->
+      <!-- Exam Emoji -->
       <img class="loader-sun" src="./exam.png" alt="Exam Emoji" />
       
       <!-- Terrain Replication -->
@@ -187,6 +193,7 @@
           letter-spacing: -0.025em;
           line-height: 1.3;
           z-index: 2;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         ">
           Tahsin Sarker<br>ME-23 
         </h2>
@@ -199,9 +206,27 @@
           margin: 0;
           line-height: 1.5;
           z-index: 2;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         ">
           Marks & CGPA<br>Calculator
         </p>
+
+        <!-- Elegant Cursive Signature -->
+        <span style="
+          font-family: 'Dancing Script', cursive;
+          font-size: 1.5rem;
+          color: rgb(255, 255, 255); /* Semi-transparent white */
+          margin-top: 14px;
+          letter-spacing: 0.05em;
+          z-index: 2;
+          border-top: 1px solid rgba(31, 13, 13, 0.15); /* Soft white border line */
+          padding-top: 6px;
+          width: 80px;
+          text-align: center;
+          user-select: none;
+        ">
+          TS27
+        </span>
 
         <!-- The Glowing Medium-Thick Loader Ring -->
         <svg class="progress-ring" viewBox="0 0 100 100">
@@ -211,8 +236,8 @@
               <stop offset="100%" stop-color="#2dd4bf" /> 
             </linearGradient>
           </defs>
-          <!-- Background track (Thickness 3.0) -->
-          <circle cx="50" cy="50" r="47" fill="transparent" stroke="rgba(255,255,255,0.08)" stroke-width="3"></circle>
+          <!-- Background track (Thickness 3.0, Soft Translucent White Track) -->
+          <circle cx="50" cy="50" r="47" fill="transparent" stroke="rgba(255, 255, 255, 0.08)" stroke-width="3"></circle>
           <!-- Progress line (Thickness 3.0) -->
           <!-- 295 is the circumference for a radius of 47 -->
           <circle id="loader-ring-progress" cx="50" cy="50" r="47" fill="transparent" stroke="url(#orb-gradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="295" stroke-dashoffset="295" style="transition: stroke-dashoffset 0.4s ease-out;"></circle>
@@ -229,9 +254,9 @@
         // ==========================================
         // ⚙️ LOADER SETTINGS (TUNE THESE TO YOUR LIKING)
         // ==========================================
-        const TICK_SPEED_MS = 300;       
-        const JUMP_MIN = 3;              
-        const JUMP_MAX = 8;              
+        const TICK_SPEED_MS = 450;       // Decreased tick rate (slower load)
+        const JUMP_MIN = 2;              // Smaller minimum jump size
+        const JUMP_MAX = 5;              // Smaller maximum jump size
         const HOLD_TIME_MS = 1000;       
         const FADE_OUT_SPEED_MS = 700;   
         // ==========================================
